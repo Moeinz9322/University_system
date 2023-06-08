@@ -20,6 +20,7 @@ public class Input {
         } while (input.equals(""));
         return input;
     }
+
     public static String inputInStartMenu() {
         String input = inputString().toUpperCase();
         while (true) {

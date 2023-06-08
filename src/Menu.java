@@ -8,20 +8,20 @@ public class Menu {
         while (true) {
             menu.printMenu();
             input = Input.inputInStartMenu();
-            switch (input){
-                case "1" , "SIGN IN":
+            switch (input) {
+                case "1", "SIGN IN":
                     signIn();
                     break;
-                case "2" , "INFO":
+                case "2", "INFO":
                     info();
                     break;
-                case "3" , "Exit":
+                case "3", "Exit":
                     break first;
-        }
-        System.out.print("username : ");
+            }
+            System.out.print("username : ");
             String username = Input.inputStringNotNull();
-        System.out.print("password : ");
-        String password = Input.inputStringNotNull();
+            System.out.print("password : ");
+            String password = Input.inputStringNotNull();
 
         }
     }
