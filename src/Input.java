@@ -25,7 +25,7 @@ public class Input {
         String input = inputString().toUpperCase();
         while (true) {
             if (input.equals("1") || input.equals("2") || input.equals("3")
-                    || input.equals("SIGN IN") || input.equals("INFO") || input.equals("EXIT")) {
+                    || input.equals("Login") || input.equals("INFO") || input.equals("EXIT")) {
                 break;
             } else {
                 System.out.println("Please check your command :(");

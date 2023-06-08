@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.RandomAccessFile;
 
 /**
  * university system
@@ -9,6 +11,12 @@
  */
 public class Main {
     public static void main(String[] args) {
-        Menu.startMenu();
+        try {
+            RandomAccessFile rfile = new RandomAccessFile("UsersFile.txt", "rw");
+            Menu.startMenu();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

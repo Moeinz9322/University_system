@@ -9,7 +9,7 @@ public class Menu {
             menu.printMenu();
             input = Input.inputInStartMenu();
             switch (input) {
-                case "1", "SIGN IN":
+                case "1", "Login":
                     signIn();
                     break;
                 case "2", "INFO":
@@ -18,11 +18,6 @@ public class Menu {
                 case "3", "Exit":
                     break first;
             }
-            System.out.print("username : ");
-            String username = Input.inputStringNotNull();
-            System.out.print("password : ");
-            String password = Input.inputStringNotNull();
-
         }
     }
 
@@ -30,13 +25,16 @@ public class Menu {
         System.out.println("""
                 ******************* University System ********************
                        ******************* Menu *******************
-                1. Sign In
+                1. Login
                 2. Info
                 3. Exit
                 """);
     }
 
     private static void signIn() {
+        System.out.println("""
+                ******************* Login ********************
+                """);
         System.out.print("username : ");
         String username = Input.inputStringNotNull();
         System.out.print("password : ");
