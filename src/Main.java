@@ -16,7 +16,7 @@ public class Main {
             RandomAccessFile file = new RandomAccessFile("UsersFile.txt", "rw");
             UsersFile usersFile = new UsersFile(file);
             file.seek(0);
-            usersFile.write(new User("ali amini","1111","staff"));
+            usersFile.write(new User("ali amini", "1111", "staff"));
             Menu.startMenu();
         } catch (IOException e) {
             throw new RuntimeException(e);

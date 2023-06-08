@@ -34,7 +34,7 @@ public class Menu {
         Input input = new Input();
         System.out.println("******************* Log In ********************");
         User user = input.inputForLogIn();
-        switch (user.getJob()){
+        switch (user.getJob()) {
             case "staff":
                 staffMenu(user.getUsername());
                 break;
@@ -68,6 +68,7 @@ public class Menu {
                 Telegram : @moeinz9322""");
         pauseInputEnter();
     }
+
     private static void pauseInputEnter() {
         System.out.print("Press enter to return to the previous menu ...");
         Input.inputString();

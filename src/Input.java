@@ -62,7 +62,7 @@ public class Input {
                 break;
             System.out.println("please check your password ...");
         }
-        file.seek(userNumber*UsersFile.RECORD_SIZE);
+        file.seek(userNumber * UsersFile.RECORD_SIZE);
         return usersFile.read();
     }
 }
