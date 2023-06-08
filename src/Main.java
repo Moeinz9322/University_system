@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
@@ -12,9 +13,12 @@ import java.io.RandomAccessFile;
 public class Main {
     public static void main(String[] args) {
         try {
-            RandomAccessFile rfile = new RandomAccessFile("UsersFile.txt", "rw");
+            RandomAccessFile file = new RandomAccessFile("UsersFile.txt", "rw");
+            UsersFile usersFile = new UsersFile(file);
+            file.seek(0);
+            usersFile.write(new User("ali amini","1111","staff"));
             Menu.startMenu();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
