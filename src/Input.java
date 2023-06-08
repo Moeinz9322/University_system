@@ -25,6 +25,23 @@ public class Input {
         return input;
     }
 
+    public static String inputIntegerNotNullToString() {
+        String input;
+        char[] chars;
+        boolean flag;
+        do {
+            flag = false;
+            input = inputString();
+            chars = input.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                if (!Character.isDigit(chars[i])) {
+                    flag = true;
+                }
+            }
+        } while (input.equals("") || flag);
+        return input;
+    }
+
     public static String inputInStartMenu() {
         String input = inputString().toUpperCase();
         while (true) {
