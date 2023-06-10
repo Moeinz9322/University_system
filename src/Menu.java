@@ -1,4 +1,6 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 public class Menu {
     public static void startMenu() throws IOException {
@@ -42,7 +44,7 @@ public class Menu {
         }
     }
 
-    private static void staffMenu(String username) {
+    private static void staffMenu(String username) throws FileNotFoundException {
         Menu menu = new Menu();
         outer:
         while (true) {
@@ -88,6 +90,8 @@ public class Menu {
     }
 
     private void addFaculty() {
+//        RandomAccessFile file = new RandomAccessFile("Faculty.txt","rw");
+//
         //add to faculty and creat faculty
         System.out.println("add faculty");
     }
@@ -96,7 +100,9 @@ public class Menu {
         System.out.println("add student");
     }
 
-    private void writeLetter() {
+    private void writeLetter() throws FileNotFoundException {
+        RandomAccessFile file = new RandomAccessFile("letters.txt","rw");
+
         System.out.println("write letter");
     }
 
