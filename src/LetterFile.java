@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Date;
 
 public class LetterFile extends File {
     public static final int RECORD_SIZE = 192;

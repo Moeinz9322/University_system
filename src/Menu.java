@@ -1,9 +1,5 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Date;
-import java.util.Random;
-import java.util.RandomAccess;
 
 public class Menu {
     public static void startMenu() throws IOException {
@@ -139,12 +135,72 @@ public class Menu {
     }
 
 
-    private void studentMenu(String username) {
-        System.out.println("student ...");
+    private void studentMenu(String username) throws IOException {
+        Menu menu = new Menu();
+        outer:
+        while (true) {
+
+            System.out.println("""
+                    ******************* Student Menu ********************
+                    1. Enroll in courses
+                    2. Write letters
+                    3. View his or her letters
+                    4. return to the main menu""");
+            boolean again;
+            do {
+                again = false;
+                switch (Input.inputIntegerNotNullToString()) {
+                    case "1" -> menu.enrollInCourses();
+                    case "2" -> menu.writeLetter("student", username);
+                    case "3" -> menu.viewLetters();
+                    case "4" -> {
+                        break outer;
+                    }
+                    default -> {
+                        System.out.println("please check your comment ... ");
+                        again = true;
+                    }
+                }
+            } while (again);
+        }
     }
 
-    private void professorMenu(String username) {
-        System.out.println("professor ...");
+    private void enrollInCourses() {
+        System.out.println("enroll in courses");
+    }
+
+    private void professorMenu(String username) throws IOException {
+        Menu menu = new Menu();
+        outer:
+        while (true) {
+
+            System.out.println("""
+                    ******************* Professor Menu ********************
+                    1. Write letter
+                    2. View letters
+                    3. set final grades
+                    4. return to the main menu""");
+            boolean again;
+            do {
+                again = false;
+                switch (Input.inputIntegerNotNullToString()) {
+                    case "1" -> menu.writeLetter("professor", username);
+                    case "2" -> menu.viewLetters();
+                    case "3" -> menu.setFinalGrades();
+                    case "4" -> {
+                        break outer;
+                    }
+                    default -> {
+                        System.out.println("please check your comment ... ");
+                        again = true;
+                    }
+                }
+            } while (again);
+        }
+    }
+
+    private void setFinalGrades() {
+        System.out.println("set final grades ... ");
     }
 
     private static void info() {

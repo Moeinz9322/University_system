@@ -1,7 +1,5 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -20,8 +18,9 @@ public class Main {
             RandomAccessFile file = new RandomAccessFile("UsersFile.txt", "rw");
             UsersFile usersFile = new UsersFile(file);
             file.seek(0);
-            usersFile.write(new User("ali amini", "1111", "staff"));
-            usersFile.write(new User("Moein", "1111", "professor"));
+            usersFile.write(new User("Ali", "1111", "staff"));
+            usersFile.write(new User("Shokoofeh", "1111", "professor"));
+            usersFile.write(new User("Moein", "1111", "student"));
             Menu.startMenu();
         } catch (IOException e) {
             throw new RuntimeException(e);
