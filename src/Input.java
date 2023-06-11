@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Date;
 import java.util.Scanner;
 
 //Check input if it was true return else print Check message
@@ -81,5 +82,39 @@ public class Input {
         }
         file.seek(userNumber * UsersFile.RECORD_SIZE);
         return usersFile.read();
+    }
+
+    public Letter inputLetter() {
+        Letter letter = new Letter(null, null, null, null, null, null, null);
+        String receiverJob;
+        first:
+        do {
+            receiverJob = inputStringNotNull().toLowerCase();
+            switch (receiverJob) {
+                case "1", "professor" -> {
+                    letter.setReceiverJob("professor");
+                    break first;
+                }
+                case "2", "student" -> {
+                    letter.setReceiverJob("student");
+                    break first;
+                }
+                case "3", "staff" -> {
+                    letter.setReceiverJob("staff");
+                    break first;
+                }
+                default -> System.err.println("please check your password ...");
+            }
+
+        } while (true);
+        System.out.print("username of " + letter.getReceiverJob() + " : ");
+        letter.setReceiverName(inputStringNotNull());
+        Date date = new Date();
+        letter.setDate(date.toString().substring(0, 20) + date.toString().substring(30, 34));
+        System.out.print("Subject : ");
+        letter.setSubject(inputStringNotNull());
+        System.out.println("TEXT : ");
+        letter.setTextOfTheLetter(inputString());
+        return letter;
     }
 }

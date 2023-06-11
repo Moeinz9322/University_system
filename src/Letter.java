@@ -5,27 +5,17 @@ public class Letter {
     private String authorName;
     private String receiverJob;
     private String receiverName;
-    private Date date;
+    private String date;
     private String subject;
     private String textOfTheLetter;
 
-    public Letter(String authorJob, String authorName, String receiverJob, String receiverName, Date date, String subject, String textOfTheLetter) {
+    public Letter(String authorJob, String authorName, String receiverJob, String receiverName, String date, String subject, String textOfTheLetter) {
         this.authorJob = authorJob;
         this.authorName = authorName;
         this.receiverJob = receiverJob;
         this.receiverName = receiverName;
         this.date = date;
         this.subject = subject;
-        this.textOfTheLetter = textOfTheLetter;
-    }
-
-    public Letter(String authorJob, String authorName, String subject, String receiverJob, String receiverName, Date date, String textOfTheLetter) {
-        this.authorJob = authorJob;
-        this.authorName = authorName;
-        this.subject = subject;
-        this.receiverJob = receiverJob;
-        this.receiverName = receiverName;
-        this.date = date;
         this.textOfTheLetter = textOfTheLetter;
     }
 
@@ -69,11 +59,11 @@ public class Letter {
         this.receiverName = receiverName;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -83,5 +73,18 @@ public class Letter {
 
     public void setTextOfTheLetter(String textOfTheLetter) {
         this.textOfTheLetter = textOfTheLetter;
+    }
+
+    @Override
+    public String toString() {
+        return "Letter{" +
+                "authorJob='" + authorJob + '\'' +
+                ", authorName='" + authorName + '\'' +
+                ", receiverJob='" + receiverJob + '\'' +
+                ", receiverName='" + receiverName + '\'' +
+                ", date='" + date + '\'' +
+                ", subject='" + subject + '\'' +
+                ", textOfTheLetter='" + textOfTheLetter + '\'' +
+                '}';
     }
 }

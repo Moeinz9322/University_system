@@ -1,6 +1,9 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Date;
+import java.util.Random;
+import java.util.RandomAccess;
 
 public class Menu {
     public static void startMenu() throws IOException {
@@ -44,7 +47,7 @@ public class Menu {
         }
     }
 
-    private static void staffMenu(String username) throws FileNotFoundException {
+    private static void staffMenu(String username) throws IOException {
         Menu menu = new Menu();
         outer:
         while (true) {
@@ -67,7 +70,7 @@ public class Menu {
                     case "1" -> menu.addProfessor();
                     case "2" -> menu.addFaculty();
                     case "3" -> menu.addStudent();
-                    case "4" -> menu.writeLetter();
+                    case "4" -> menu.writeLetter("staff", username);
                     case "5" -> menu.viewLetters();
                     case "6" -> menu.addSemester();
                     case "7" -> menu.addCourse();
@@ -100,10 +103,23 @@ public class Menu {
         System.out.println("add student");
     }
 
-    private void writeLetter() throws FileNotFoundException {
-        RandomAccessFile file = new RandomAccessFile("letters.txt","rw");
-
-        System.out.println("write letter");
+    private void writeLetter(String userJob, String username) throws IOException {
+        System.out.print("""
+                ******************* Write letter Menu ********************
+                write letter for :
+                1. Professor
+                2. Student
+                3. Staff
+                """);
+        RandomAccessFile file = new RandomAccessFile("Letter.txt", "rw");
+        file.seek(file.length());
+        Letter letter = new Input().inputLetter();
+        letter.setAuthorJob(userJob);
+        letter.setAuthorName(username);
+//        System.out.println(letter);
+        new LetterFile(file).write(letter);
+        System.out.println("successful ....");
+        pauseInputEnter();
     }
 
     private void viewLetters() {
