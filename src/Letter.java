@@ -1,5 +1,3 @@
-
-
 public class Letter {
     private String authorJob;
     private String authorName;

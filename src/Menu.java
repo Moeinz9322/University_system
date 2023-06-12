@@ -1,6 +1,8 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
+import java.util.Random;
 
 public class Menu {
     public static void startMenu() throws IOException {
@@ -91,6 +93,7 @@ public class Menu {
 
     private void addFaculty() {
 //        RandomAccessFile file = new RandomAccessFile("Faculty.txt","rw");
+
 //
         //add to faculty and creat faculty
         System.out.println("add faculty");
@@ -133,16 +136,58 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private void addSemester() {
-        System.out.println("add semester");
+    private void addSemester() throws IOException {
+        RandomAccessFile fileSemesters = new RandomAccessFile("fileSemesters.txt","rw");
+        SemestersFile semestersFile = new SemestersFile(fileSemesters);
+        first:
+        if (fileSemesters.length()!=0) {
+            fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
+            if (semestersFile.readFixString().equals("Start")) {
+                System.out.println("The previous semester has not yet ended ..." +
+                        "\nif you want end it enter 1 :");
+                if (Input.inputString().equals("1")) {
+                    fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
+                    semestersFile.writeString("end");
+                }
+                else
+                    break first;
+            }
+            fileSemesters.seek(fileSemesters.length());
+            semestersFile.write("Start");
+            System.out.println("successful ...");
+
+        }
+        else {
+            fileSemesters.seek(fileSemesters.length());
+            semestersFile.write("Start");
+            System.out.println("successful ...");
+        }
+        pauseInputEnter();
     }
 
     private void addCourse() {
         System.out.println("add course");
     }
 
-    private void endSemester() {
-        System.out.println("end semester");
+    private void endSemester() throws IOException {
+        RandomAccessFile fileSemesters = new RandomAccessFile("fileSemesters.txt","rw");
+        SemestersFile semestersFile = new SemestersFile(fileSemesters);
+        if (fileSemesters.length()!=0) {
+            fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
+            if (semestersFile.readFixString().equals("Start")) {
+                fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
+                semestersFile.writeString("end");
+                System.out.println("successful ...");
+            }
+            else {
+                System.out.println("There is no current semester ...");
+            }
+
+        }
+        else {
+            System.out.println("There is no semester ...");
+        }
+        pauseInputEnter();
     }
 
 
