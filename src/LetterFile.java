@@ -1,8 +1,11 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class LetterFile extends File {
-    public static final int RECORD_SIZE = 192;
+    public static final int RECORD_SIZE = 1198;
     public static final int FIX_SIZE_FOR_DATE = 24;
     public static final int FIX_SIZE_FOR_TEXT = 500;
 
@@ -86,5 +89,18 @@ public class LetterFile extends File {
         letter.setTextOfTheLetter(readFixStringText());
 //        System.out.println(letter);
         return letter;
+    }
+
+    public List<Letter> findLetter(String receiverName) throws IOException {
+        List<Letter> letters = new ArrayList<>();
+        file.seek(0);
+        for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
+            file.seek(i * RECORD_SIZE + FIX_SIZE * 6);
+            if (receiverName.equals(readFixString())) {
+                file.seek(i * RECORD_SIZE);
+                letters.add(read());
+            }
+        }
+        return letters;
     }
 }

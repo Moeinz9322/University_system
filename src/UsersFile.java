@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class UsersFile extends File {
-    public static final int RECORD_SIZE = 90;
+    public static final int RECORD_SIZE = 150;
 
     public UsersFile(RandomAccessFile file) {
         super(file);
@@ -12,11 +12,13 @@ public class UsersFile extends File {
         writeString(user.getUsername());
         writeString(user.getPassword());
         writeString(user.getJob());
+        writeString(user.getFirstName());
+        writeString(user.getLastName());
         return true;
     }
 
     public User read() throws IOException {
-        return new User(readFixString(), readFixString(), readFixString());
+        return new User(readFixString(), readFixString(), readFixString() , readFixString() , readFixString());
     }
 
     public int findUser(String username) throws IOException {

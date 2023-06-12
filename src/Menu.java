@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.List;
 
 public class Menu {
     public static void startMenu() throws IOException {
@@ -67,7 +68,7 @@ public class Menu {
                     case "2" -> menu.addFaculty();
                     case "3" -> menu.addStudent();
                     case "4" -> menu.writeLetter("staff", username);
-                    case "5" -> menu.viewLetters();
+                    case "5" -> menu.viewLetters(username);
                     case "6" -> menu.addSemester();
                     case "7" -> menu.addCourse();
                     case "8" -> menu.endSemester();
@@ -118,8 +119,18 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private void viewLetters() {
-        System.out.println("view letter");
+    private void viewLetters(String username) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("Letter.txt", "rw");
+        LetterFile letterFile = new LetterFile(file);
+        List<Letter> letters = letterFile.findLetter(username);
+        for (Letter letter : letters) {
+            System.out.println(".......................................................................................");
+            System.out.printf("A letter from : %s(%s)\\n", letter.getAuthorName(), letter.getAuthorJob());
+            System.out.printf("Date : %s\nSubject : %s\n", letter.getDate(), letter.getSubject());
+            System.out.println(letter.getTextOfTheLetter());
+        }
+        System.out.println(".......................................................................................");
+        pauseInputEnter();
     }
 
     private void addSemester() {
@@ -152,7 +163,7 @@ public class Menu {
                 switch (Input.inputIntegerNotNullToString()) {
                     case "1" -> menu.enrollInCourses();
                     case "2" -> menu.writeLetter("student", username);
-                    case "3" -> menu.viewLetters();
+                    case "3" -> menu.viewLetters(username);
                     case "4" -> {
                         break outer;
                     }
@@ -185,7 +196,7 @@ public class Menu {
                 again = false;
                 switch (Input.inputIntegerNotNullToString()) {
                     case "1" -> menu.writeLetter("professor", username);
-                    case "2" -> menu.viewLetters();
+                    case "2" -> menu.viewLetters(username);
                     case "3" -> menu.setFinalGrades();
                     case "4" -> {
                         break outer;
