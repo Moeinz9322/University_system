@@ -91,12 +91,25 @@ public class Menu {
         System.out.println("add professor");
     }
 
-    private void addFaculty() {
-//        RandomAccessFile file = new RandomAccessFile("Faculty.txt","rw");
+    private void addFaculty() throws IOException {
 
-//
-        //add to faculty and creat faculty
-        System.out.println("add faculty");
+        RandomAccessFile file = new RandomAccessFile("Faculties.txt", "rw");
+        FacultyFile facultyFile = new FacultyFile(file);
+        String facultyName;
+        System.out.println("Faculty name :");
+        while (true) {
+            facultyName = Input.inputStringNotNull();
+            if (facultyFile.findFaculty(facultyName) == -1)
+                break;
+            System.out.println("please change the name of the faculty ... ");
+        }
+        file.seek(file.length());
+        facultyFile.writeString(facultyName);
+        RandomAccessFile newFaculty = new RandomAccessFile(facultyName + "_FacultyFile.txt", "rw");
+        System.out.println("successful ...");
+        pauseInputEnter();
+        file.close();
+        newFaculty.close();
     }
 
     private void addStudent() {
@@ -120,6 +133,7 @@ public class Menu {
         new LetterFile(file).write(letter);
         System.out.println("successful ....");
         pauseInputEnter();
+        file.close();
     }
 
     private void viewLetters(String username) throws IOException {
@@ -134,13 +148,14 @@ public class Menu {
         }
         System.out.println(".......................................................................................");
         pauseInputEnter();
+        file.close();
     }
 
     private void addSemester() throws IOException {
-        RandomAccessFile fileSemesters = new RandomAccessFile("fileSemesters.txt","rw");
+        RandomAccessFile fileSemesters = new RandomAccessFile("SemestersFile.txt", "rw");
         SemestersFile semestersFile = new SemestersFile(fileSemesters);
         first:
-        if (fileSemesters.length()!=0) {
+        if (fileSemesters.length() != 0) {
             fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
             if (semestersFile.readFixString().equals("Start")) {
                 System.out.println("The previous semester has not yet ended ..." +
@@ -148,21 +163,20 @@ public class Menu {
                 if (Input.inputString().equals("1")) {
                     fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
                     semestersFile.writeString("end");
-                }
-                else
+                } else
                     break first;
             }
             fileSemesters.seek(fileSemesters.length());
             semestersFile.write("Start");
             System.out.println("successful ...");
 
-        }
-        else {
+        } else {
             fileSemesters.seek(fileSemesters.length());
             semestersFile.write("Start");
             System.out.println("successful ...");
         }
         pauseInputEnter();
+        fileSemesters.close();
     }
 
     private void addCourse() {
@@ -170,24 +184,23 @@ public class Menu {
     }
 
     private void endSemester() throws IOException {
-        RandomAccessFile fileSemesters = new RandomAccessFile("fileSemesters.txt","rw");
+        RandomAccessFile fileSemesters = new RandomAccessFile("SemestersFile.txt", "rw");
         SemestersFile semestersFile = new SemestersFile(fileSemesters);
-        if (fileSemesters.length()!=0) {
+        if (fileSemesters.length() != 0) {
             fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
             if (semestersFile.readFixString().equals("Start")) {
                 fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
                 semestersFile.writeString("end");
                 System.out.println("successful ...");
-            }
-            else {
+            } else {
                 System.out.println("There is no current semester ...");
             }
 
-        }
-        else {
+        } else {
             System.out.println("There is no semester ...");
         }
         pauseInputEnter();
+        fileSemesters.close();
     }
 
 
