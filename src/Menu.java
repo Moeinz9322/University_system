@@ -146,8 +146,16 @@ public class Menu {
         newFaculty.close();
     }
 
-    private void addStudent() {
-        System.out.println("add student");
+    private void addStudent() throws IOException {
+        RandomAccessFile usersFile = new RandomAccessFile("UsersFile.txt", "rw");
+        UsersFile usersFile1 = new UsersFile(usersFile);
+        User user = new User(null, null, "student", null, null);
+        new Input().inputUser(user);
+        usersFile.seek(usersFile.length());
+        usersFile1.write(user);
+        usersFile.close();
+        System.out.println("successful ...");
+        pauseInputEnter();
     }
 
     private void writeLetter(String userJob, String username) throws IOException {

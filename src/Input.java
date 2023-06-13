@@ -143,7 +143,7 @@ public class Input {
         username++;
         file.seek(0);
         file.writeInt(username);
-        System.out.printf("Please write down the teacher's information and take a printout\n" +
+        System.out.printf("Please print user information ... \n" +
                 "username : %s\npassword : %s\n", user.getUsername(), user.getPassword());
     }
 }
