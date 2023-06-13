@@ -116,19 +116,20 @@ public class Menu {
 
     private void addFaculty() throws IOException {
         RandomAccessFile file = new RandomAccessFile("Faculties.txt", "rw");
-        FacultyFile facultyFile = new FacultyFile(file);
+        FacultyFile allFacultyFile = new FacultyFile(file);
         String facultyName;
         System.out.println("Faculty name :");
         while (true) {
             facultyName = Input.inputStringNotNull();
-            if (facultyFile.findFaculty(facultyName) == -1)
+            if (allFacultyFile.findFaculty(facultyName) == -1)
                 break;
             System.out.println("please change the name of the faculty ... ");
         }
         file.seek(file.length());
-        facultyFile.writeString(facultyName);
+        allFacultyFile.writeString(facultyName);
         RandomAccessFile newFaculty = new RandomAccessFile(facultyName + "_FacultyFile.txt", "rw");
-        facultyFile = new FacultyFile(newFaculty);
+        FacultyFile facultyFile = new FacultyFile(newFaculty);
+        //get chair professor
         User user = new User(null, null, "professor", null, null);
         System.out.println("Please enter a professor as chair professor of this faculty ... ");
         new Input().inputUser(user);
@@ -138,6 +139,9 @@ public class Menu {
         UsersFile usersFile1 = new UsersFile(usersFile);
         usersFile.seek(usersFile.length());
         usersFile1.write(user);
+        file.seek(file.length());
+        allFacultyFile.writeString(user.getUsername());
+        allFacultyFile.writeString(user.getPassword());
         System.out.println("successful ...");
         pauseInputEnter();
         newFaculty.close();
@@ -147,13 +151,12 @@ public class Menu {
     }
 
     private void addStudent() throws IOException {
-        RandomAccessFile usersFile = new RandomAccessFile("UsersFile.txt", "rw");
-        UsersFile usersFile1 = new UsersFile(usersFile);
-        User user = new User(null, null, "student", null, null);
-        new Input().inputUser(user);
-        usersFile.seek(usersFile.length());
-        usersFile1.write(user);
-        usersFile.close();
+        System.out.print("""
+                ******************* Add Student ********************
+                1. Add Students(File)
+                2. Add Student
+                """);
+        new Input().inputForAddStudentMenu();
         System.out.println("successful ...");
         pauseInputEnter();
     }

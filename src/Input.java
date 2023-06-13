@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Date;
@@ -122,13 +123,15 @@ public class Input {
         RandomAccessFile file = new RandomAccessFile("username.dat", "rw");
         RandomAccessFile userFile = new RandomAccessFile("UsersFile.txt", "rw");
         UsersFile usersFile = new UsersFile(userFile);
+        int userNumber1, userNumber2;
         while (true) {
             System.out.print("First name : ");
             user.setFirstName(inputStringNotNull());
             System.out.print("Last name : ");
             user.setLastName(inputStringNotNull());
-            if (usersFile.findUserAccordingToFirstName(user.getFirstName()) == -1 ||
-                    usersFile.findUserAccordingToLastName(user.getLastName()) == -1) {
+            userNumber1 = usersFile.findUserAccordingToFirstName(user.getFirstName());
+            userNumber2 = usersFile.findUserAccordingToLastName(user.getLastName());
+            if (userNumber1 == -1 || userNumber2 == -1 || userNumber2 == userNumber1) {
                 break;
             }
             System.out.println("This user exists in the system ...");
@@ -145,5 +148,29 @@ public class Input {
         file.writeInt(username);
         System.out.printf("Please print user information ... \n" +
                 "username : %s\npassword : %s\n", user.getUsername(), user.getPassword());
+    }
+
+    public void inputForAddStudentMenu() throws IOException {
+        FacultyFile facultyFile = new FacultyFile(new RandomAccessFile("FacultyFile.txt", "rw"));
+        do {
+            switch (inputStringNotNull().toLowerCase()) {
+                case "1", "add students", "file" -> {
+                    System.out.print("please enter path of data file : ");
+                    facultyFile.addUserFromFile(inputStringNotNull());
+                    return;
+                }
+                case "2", "add student" -> {
+                    RandomAccessFile usersFile = new RandomAccessFile("UsersFile.txt", "rw");
+                    UsersFile usersFile1 = new UsersFile(usersFile);
+                    User user = new User(null, null, "student", null, null);
+                    inputUser(user);
+                    usersFile.seek(usersFile.length());
+                    usersFile1.write(user);
+                    usersFile.close();
+                    return;
+                }
+                default -> System.err.println("please check your password ...");
+            }
+        } while (true);
     }
 }
