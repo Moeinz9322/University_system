@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
 import java.util.Random;
+import java.util.RandomAccess;
 
 public class Menu {
     public static void startMenu() throws IOException {
@@ -86,13 +87,34 @@ public class Menu {
         }
     }
 
-    private void addProfessor() {
-        //add to users and faculty
-        System.out.println("add professor");
+    private void addProfessor() throws IOException {
+        RandomAccessFile file = new RandomAccessFile("Faculties.txt", "rw");
+        FacultyFile facultyFile = new FacultyFile(file);
+        String facultyName;
+        System.out.println("Faculty name :");
+        while (true) {
+            facultyName = Input.inputStringNotNull();
+            if (facultyFile.findFaculty(facultyName) != -1)
+                break;
+            System.out.println("please check your comment ... ");
+        }
+        RandomAccessFile selectedFacultyFile = new RandomAccessFile(facultyName + "_FacultyFile.txt", "rw");
+        facultyFile = new FacultyFile(selectedFacultyFile);
+        User user = new User(null, null, "professor", null, null);
+        new Input().inputUser(user);
+        selectedFacultyFile.seek(selectedFacultyFile.length());
+        facultyFile.write(user);
+        RandomAccessFile usersFile = new RandomAccessFile("UsersFile.txt", "rw");
+        UsersFile usersFile1 = new UsersFile(usersFile);
+        usersFile.seek(usersFile.length());
+        usersFile1.write(user);
+        selectedFacultyFile.close();
+        file.close();
+        System.out.println("successful ...");
+        pauseInputEnter();
     }
 
     private void addFaculty() throws IOException {
-
         RandomAccessFile file = new RandomAccessFile("Faculties.txt", "rw");
         FacultyFile facultyFile = new FacultyFile(file);
         String facultyName;

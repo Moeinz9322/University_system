@@ -19,4 +19,23 @@ public class FacultyFile extends UsersFile {
         }
         return -1;
     }
+
+    @Override
+    public boolean write(User user) throws IOException {
+        writeString(user.getUsername());
+        writeString(user.getPassword());
+        writeString(user.getFirstName());
+        writeString(user.getLastName());
+        return true;
+    }
+
+    @Override
+    public User read() throws IOException {
+        return new User(readFixString(), readFixString(), null, readFixString(), readFixString());
+    }
+
+    @Override
+    public int findUser(String username) throws IOException {
+        return super.findUser(username);
+    }
 }

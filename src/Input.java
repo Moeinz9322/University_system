@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 
 //Check input if it was true return else print Check message
@@ -114,5 +115,25 @@ public class Input {
         System.out.println("TEXT : ");
         letter.setTextOfTheLetter(inputString());
         return letter;
+    }
+
+    public void inputUser(User user) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("username.dat", "rw");
+        System.out.print("First name : ");
+        user.setFirstName(inputStringNotNull());
+        System.out.print("Last name : ");
+        user.setLastName(inputStringNotNull());
+        file.seek(0);
+        if (file.length() == 0)
+            file.writeInt(1000);
+        file.seek(0);
+        int username = file.readInt();
+        user.setUsername(String.valueOf(username) + user.getFirstName());
+        user.setPassword(String.valueOf(username) + user.getLastName());
+        username++;
+        file.seek(0);
+        file.writeInt(username);
+        System.out.printf("Please write down the teacher's information and take a printout\n" +
+                "username : %s\npassword : %s\n", user.getUsername(), user.getPassword());
     }
 }

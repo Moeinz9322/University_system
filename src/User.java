@@ -17,8 +17,8 @@ public class User {
         return username;
     }
 
-    public void setUserId(String userId) {
-        this.username = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -35,10 +35,6 @@ public class User {
 
     public void setJob(String job) {
         this.job = job;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstName() {
