@@ -128,8 +128,20 @@ public class Menu {
         file.seek(file.length());
         facultyFile.writeString(facultyName);
         RandomAccessFile newFaculty = new RandomAccessFile(facultyName + "_FacultyFile.txt", "rw");
+        facultyFile = new FacultyFile(newFaculty);
+        User user = new User(null, null, "professor", null, null);
+        System.out.println("Please enter a professor as chair professor of this faculty ... ");
+        new Input().inputUser(user);
+        newFaculty.seek(newFaculty.length());
+        facultyFile.write(user);
+        RandomAccessFile usersFile = new RandomAccessFile("UsersFile.txt", "rw");
+        UsersFile usersFile1 = new UsersFile(usersFile);
+        usersFile.seek(usersFile.length());
+        usersFile1.write(user);
         System.out.println("successful ...");
         pauseInputEnter();
+        newFaculty.close();
+        usersFile.close();
         file.close();
         newFaculty.close();
     }
