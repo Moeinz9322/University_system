@@ -18,10 +18,10 @@ public class UsersFile extends File {
     }
 
     public User read() throws IOException {
-        return new User(readFixString(), readFixString(), readFixString() , readFixString() , readFixString());
+        return new User(readFixString(), readFixString(), readFixString(), readFixString(), readFixString());
     }
 
-    public int findUser(String username) throws IOException {
+    public int findUserAccordingToUsername(String username) throws IOException {
         for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
             file.seek(i * RECORD_SIZE);
             if (username.equals(readFixString()))
@@ -29,4 +29,23 @@ public class UsersFile extends File {
         }
         return -1;
     }
+
+    public int findUserAccordingToFirstName(String username) throws IOException {
+        for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
+            file.seek(i * RECORD_SIZE + FIX_SIZE * 6);
+            if (username.equals(readFixString()))
+                return i;
+        }
+        return -1;
+    }
+
+    public int findUserAccordingToLastName(String username) throws IOException {
+        for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
+            file.seek(i * RECORD_SIZE + FIX_SIZE * 8);
+            if (username.equals(readFixString()))
+                return i;
+        }
+        return -1;
+    }
+
 }

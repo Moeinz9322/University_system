@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Date;
 import java.util.Random;
+import java.util.RandomAccess;
 import java.util.Scanner;
 
 //Check input if it was true return else print Check message
@@ -65,7 +66,7 @@ public class Input {
         int userNumber;
         while (true) {
             username = Input.inputStringNotNull();
-            userNumber = usersFile.findUser(username);
+            userNumber = usersFile.findUserAccordingToUsername(username);
             if (userNumber != -1) {
                 file.seek(userNumber * UsersFile.RECORD_SIZE + usersFile.FIX_SIZE * 2);
                 password = usersFile.readFixString();
@@ -119,10 +120,19 @@ public class Input {
 
     public void inputUser(User user) throws IOException {
         RandomAccessFile file = new RandomAccessFile("username.dat", "rw");
-        System.out.print("First name : ");
-        user.setFirstName(inputStringNotNull());
-        System.out.print("Last name : ");
-        user.setLastName(inputStringNotNull());
+        RandomAccessFile userFile = new RandomAccessFile("UsersFile.txt", "rw");
+        UsersFile usersFile = new UsersFile(userFile);
+        while (true) {
+            System.out.print("First name : ");
+            user.setFirstName(inputStringNotNull());
+            System.out.print("Last name : ");
+            user.setLastName(inputStringNotNull());
+            if (usersFile.findUserAccordingToFirstName(user.getFirstName()) == -1 ||
+                    usersFile.findUserAccordingToLastName(user.getLastName()) == -1) {
+                break;
+            }
+            System.out.println("This user exists in the system ...");
+        }
         file.seek(0);
         if (file.length() == 0)
             file.writeInt(1000);

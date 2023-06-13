@@ -35,7 +35,7 @@ public class FacultyFile extends UsersFile {
     }
 
     @Override
-    public int findUser(String username) throws IOException {
-        return super.findUser(username);
+    public int findUserAccordingToUsername(String username) throws IOException {
+        return super.findUserAccordingToUsername(username);
     }
 }
