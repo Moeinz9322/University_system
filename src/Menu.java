@@ -224,8 +224,16 @@ public class Menu {
         fileSemesters.close();
     }
 
-    private void addCourse() {
-        System.out.println("add course");
+    private void addCourse() throws IOException {
+        CoursesOfProfessor coursesOfProfessor = new Input().inputCourseOfProfessor();
+        RandomAccessFile file = new RandomAccessFile("Courses.txt", "rw");
+        file.seek(file.length());
+        new CoursesOfProfessorFile(file).write(coursesOfProfessor);
+//        new RandomAccessFile("Courses.txt", "rw").seek(0);
+//        System.out.println(new CoursesOfProfessorFile(new RandomAccessFile("Courses.txt", "rw")).read());
+        System.out.println("successful ...");
+        pauseInputEnter();
+        file.close();
     }
 
     private void endSemester() throws IOException {

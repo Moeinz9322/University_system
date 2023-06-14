@@ -13,8 +13,6 @@ import java.util.Date;
 public class Main {
     public static void main(String[] args) {
         try {
-            Date date = new Date();
-            System.out.println(date.toString().substring(0, 20) + date.toString().substring(30));
             RandomAccessFile file = new RandomAccessFile("UsersFile.txt", "rw");
             UsersFile usersFile = new UsersFile(file);
             file.seek(0);

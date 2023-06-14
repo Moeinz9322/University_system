@@ -33,10 +33,6 @@ public class FacultyFile extends UsersFile {
         return new User(readFixString(), readFixString(), null, readFixString(), readFixString());
     }
 
-    @Override
-    public int findUserAccordingToUsername(String username) throws IOException {
-        return super.findUserAccordingToUsername(username);
-    }
 
     public void addUserFromFile(String filePath) throws IOException {
         FileInputStream fileData = new FileInputStream(filePath + ".txt");

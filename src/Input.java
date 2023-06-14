@@ -51,7 +51,7 @@ public class Input {
                     || input.equals("LOG IN") || input.equals("INFO") || input.equals("EXIT")) {
                 break;
             } else {
-                System.out.println("Please check your command :(");
+                System.err.println("Please check your command :(");
                 input = inputString().toUpperCase();
             }
         }
@@ -73,13 +73,13 @@ public class Input {
                 password = usersFile.readFixString();
                 break;
             }
-            System.out.println("please check your username ...");
+            System.err.println("please check your username ...");
         }
         System.out.print("password : ");
         while (true) {
             if (password.equals(Input.inputStringNotNull()))
                 break;
-            System.out.println("please check your password ...");
+            System.err.println("please check your password ...");
         }
         file.seek(userNumber * UsersFile.RECORD_SIZE);
         return usersFile.read();
@@ -172,5 +172,60 @@ public class Input {
                 default -> System.err.println("please check your password ...");
             }
         } while (true);
+    }
+
+    public CoursesOfProfessor inputCourseOfProfessor() throws IOException {
+//        System.out.print("please enter name of faculty : ");
+//        String faculty;
+//        while (true) {
+//            faculty = inputStringNotNull();
+//            if (new FacultyFile(new RandomAccessFile("Faculty.txt", "rw")).findFaculty(faculty) != -1)
+//                break;
+//            System.err.println("please check your command ...");
+//        }
+        System.out.print("Professor username : ");
+        String username = null;
+        while (true) {
+            username = inputStringNotNull();
+            if (new UsersFile(new RandomAccessFile("UsersFile.txt", "rw")).findUserAccordingToUsername(username) != -1)
+                break;
+            System.err.println("please check your command ...");
+        }
+        System.out.print("name of course : ");
+        CoursesOfProfessor coursesOfProfessor = new CoursesOfProfessor(inputStringNotNull(), 0, null, 0, username);
+        System.out.print("vahed course : ");
+        coursesOfProfessor.setCourse(Integer.parseInt(inputIntegerNotNullToString()));
+        System.out.println("weekdays : (Sa,Su,Mo,Tu,We)");
+        String weekday = null;
+        first:
+        while (true) {
+            coursesOfProfessor.setWeekdays(inputStringNotNull());
+            if (coursesOfProfessor.getCourse() > 2) {
+                weekday = inputStringNotNull();
+                coursesOfProfessor.setWeekdays(coursesOfProfessor.getWeekdays() + weekday);
+                switch (weekday) {
+                    case "Sa", "Su", "Mo", "Tu", "We":
+                        break;
+                    default:
+                        coursesOfProfessor.setWeekdays("00notTrue");
+                }
+
+            }
+            if (coursesOfProfessor.getWeekdays().length() < 2)
+                continue;
+            switch (coursesOfProfessor.getWeekdays().substring(0, 2)) {
+                case "Sa", "Su", "Mo", "Tu", "We":
+                    break first;
+            }
+            System.err.println("please check your command ...");
+        }
+        System.out.print("time of course : ");
+        while (true) {
+            coursesOfProfessor.setTime(Integer.parseInt(inputIntegerNotNullToString()));
+            if (!new CoursesOfProfessorFile(new RandomAccessFile("Courses.txt", "rw")).isThereClockInterference(coursesOfProfessor))
+                break;
+            System.err.println("Clock Interference ... !!!");
+        }
+        return coursesOfProfessor;
     }
 }
