@@ -272,7 +272,7 @@ public class Menu {
             do {
                 again = false;
                 switch (Input.inputIntegerNotNullToString()) {
-                    case "1" -> menu.enrollInCourses();
+                    case "1" -> menu.enrollInCourses(username);
                     case "2" -> menu.writeLetter("student", username);
                     case "3" -> menu.viewLetters(username);
                     case "4" -> {
@@ -287,8 +287,16 @@ public class Menu {
         }
     }
 
-    private void enrollInCourses() {
-        System.out.println("enroll in courses");
+    private void enrollInCourses(String username) throws IOException {
+        CoursesOfStudents coursesOfStudents = new CoursesOfStudents(null, username, null, 0, 0);
+        RandomAccessFile file = new RandomAccessFile("CoursesOfStudent.txt", "rw");
+        file.seek(file.length());
+        new Input().inputCourseOfStudent(coursesOfStudents);
+        new CoursesOfStudentsFile(file).write(coursesOfStudents);
+//        file.seek(file.length()-CoursesOfStudentsFile.RECORD_SIZE);
+//        System.out.println(new CoursesOfStudentsFile(file).read());
+        System.out.println("successful ...");
+        pauseInputEnter();
     }
 
     private void professorMenu(String username) throws IOException {

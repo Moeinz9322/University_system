@@ -9,13 +9,15 @@ public class CoursesOfProfessor {
     private String weekdays;
     private int time;
     private String professorUsername;
+    private String examDate;
 
-    public CoursesOfProfessor(String courseName, int course, String weekdays, int time, String professorUsername) {
+    public CoursesOfProfessor(String courseName, int course, String weekdays, int time, String professorUsername, String examDate) {
         this.courseName = courseName;
         this.course = course;
         this.weekdays = weekdays;
         this.time = time;
         this.professorUsername = professorUsername;
+        this.examDate = examDate;
     }
 
     public String getCourseName() {
@@ -58,6 +60,14 @@ public class CoursesOfProfessor {
         this.professorUsername = professorUsername;
     }
 
+    public String getExamDate() {
+        return examDate;
+    }
+
+    public void setExamDate(String examDate) {
+        this.examDate = examDate;
+    }
+
     @Override
     public String toString() {
         return "CoursesOfProfessor{" +
@@ -66,6 +76,7 @@ public class CoursesOfProfessor {
                 ", weekdays='" + weekdays + '\'' +
                 ", time=" + time +
                 ", professorUsername='" + professorUsername + '\'' +
+                ", examDate='" + examDate + '\'' +
                 '}';
     }
 }

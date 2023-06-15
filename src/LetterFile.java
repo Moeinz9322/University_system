@@ -22,7 +22,6 @@ public class LetterFile extends File {
     }
 
 
-
     /**
      * fix size So that we can read the file later
      * param str

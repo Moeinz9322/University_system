@@ -31,6 +31,7 @@ public class File {
         }
         return str.substring(0, FIX_SIZE);
     }
+
     /**
      * read a string to the length FIX_SIZE
      * return  a string to the length FIX_SIZE
@@ -47,12 +48,14 @@ public class File {
     public void writeStringDate(String str) throws IOException {
         file.writeChars(this.fixSizeToWriteDate(str));
     }
+
     private String fixSizeToWriteDate(String str) {
         while (str.length() < FIX_SIZE_FOR_DATE) {
             str += " ";
         }
         return str.substring(0, FIX_SIZE_FOR_DATE);
     }
+
     public String readFixStringForDate() throws IOException {
         String tmp = "";
         for (int i = 0; i < FIX_SIZE_FOR_DATE; i++) {

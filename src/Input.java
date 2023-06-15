@@ -1,10 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Date;
-import java.util.Random;
-import java.util.RandomAccess;
-import java.util.Scanner;
+import java.util.*;
 
 //Check input if it was true return else print Check message
 public class Input {
@@ -192,7 +189,8 @@ public class Input {
             System.err.println("please check your command ...");
         }
         System.out.print("name of course : ");
-        CoursesOfProfessor coursesOfProfessor = new CoursesOfProfessor(inputStringNotNull(), 0, null, 0, username);
+        CoursesOfProfessor coursesOfProfessor = new CoursesOfProfessor(inputStringNotNull(), 0,
+                null, 0, username, null);
         System.out.print("vahed course : ");
         coursesOfProfessor.setCourse(Integer.parseInt(inputIntegerNotNullToString()));
         System.out.println("weekdays : (Sa,Su,Mo,Tu,We)");
@@ -226,6 +224,42 @@ public class Input {
                 break;
             System.err.println("Clock Interference ... !!!");
         }
+        System.out.print("Exam date : ");
+        coursesOfProfessor.setExamDate(inputStringNotNull());
         return coursesOfProfessor;
+    }
+
+    public void inputCourseOfStudent(CoursesOfStudents coursesOfStudents) throws IOException {
+        RandomAccessFile professorsCoursesFile = new RandomAccessFile("Courses.txt", "rw");
+        CoursesOfProfessorFile coursesOfProfessorFile = new CoursesOfProfessorFile(professorsCoursesFile);
+        List<Integer> courseNumber = new ArrayList<>();
+        int coursesNumberListSize;
+        while (true) {
+            System.out.print("course name : ");
+            while (true) {
+                courseNumber = new ArrayList<>();
+                coursesOfStudents.setCourseName(inputStringNotNull());
+                courseNumber = coursesOfProfessorFile.findCourseName(coursesOfStudents.getCourseName());
+                for (int i = 0; i < courseNumber.size(); i++) {
+                    professorsCoursesFile.seek(courseNumber.get(i) * CoursesOfProfessorFile.RECORD_SIZE);
+                    System.out.println(i + 1 + ". " + coursesOfProfessorFile.read());
+                }
+//                courseNumber.stream().forEach(integer -> System.out.println(integer));
+//                try {
+                coursesOfStudents.setCourseNumber(courseNumber.get(Integer.parseInt(inputInStartMenu()) - 1));
+//                } catch (IndexOutOfBoundsException e) {
+//                    System.err.println("please check your command ...");
+//                }
+//                System.out.println(coursesOfStudents.getCourseNumber());
+                if (coursesOfStudents.getCourseNumber() != -2)
+                    break;
+                System.err.println("please check your command ...");
+            }
+            professorsCoursesFile.seek(CoursesOfProfessorFile.RECORD_SIZE * coursesOfStudents.getCourseNumber() + (6 * coursesOfProfessorFile.FIX_SIZE) + 8);
+            coursesOfStudents.setExamDate(coursesOfProfessorFile.readFixString());
+            coursesOfStudents.setGrade(0);
+            if (!new CoursesOfStudentsFile(new RandomAccessFile("CoursesOfStudent.txt", "rw")).isThereClockInterference(coursesOfStudents))
+                break;
+        }
     }
 }
