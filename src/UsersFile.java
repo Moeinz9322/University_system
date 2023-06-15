@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersFile extends File {
     public static final int RECORD_SIZE = 150;
@@ -60,6 +62,17 @@ public class UsersFile extends File {
                 return i;
         }
         return -1;
+    }
+    public List<String> findUserAccordingToJob(String job) throws IOException {
+        List<String> studentsUsername = new ArrayList<>();
+        for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
+            file.seek(i * RECORD_SIZE + FIX_SIZE * 4);
+            if (job.equals(readFixString())){
+                file.seek(i * RECORD_SIZE);
+                studentsUsername.add(readFixString());
+            }
+        }
+        return studentsUsername;
     }
 
 }

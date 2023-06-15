@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class CoursesOfStudentsFile extends File {
 
-    public static final int RECORD_SIZE = 98;
+    public static final int RECORD_SIZE = 102;
 
     public CoursesOfStudentsFile(RandomAccessFile file) {
         super(file);
@@ -21,11 +21,11 @@ public class CoursesOfStudentsFile extends File {
         writeString(coursesOfStudents.getStudentUsername());
         writeString(coursesOfStudents.getExamDate());
         file.writeInt(coursesOfStudents.getCourseNumber());
-        file.writeInt(coursesOfStudents.getGrade());
+        file.writeDouble(coursesOfStudents.getGrade());
     }
 
     public CoursesOfStudents read() throws IOException {
-        return new CoursesOfStudents(readFixString(), readFixString(), readFixString(), file.readInt(), file.readInt());
+        return new CoursesOfStudents(readFixString(), readFixString(), readFixString(), file.readInt(), file.readDouble());
     }
 
     public boolean isThereClockInterference(CoursesOfStudents coursesOfStudents) throws IOException {
@@ -86,5 +86,20 @@ public class CoursesOfStudentsFile extends File {
                 coursesNumber.add(i);
         }
         return coursesNumber;
+    }
+
+    public double averageGrade(String username) throws IOException {
+        double sum = 0.0;
+        int count = 0;
+        for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
+            file.seek(i * RECORD_SIZE + FIX_SIZE * 2);
+            if (username.equals(readFixString())) {
+                file.seek(i * RECORD_SIZE + FIX_SIZE * 6 + 4);
+//                System.out.println(file.readInt());
+                sum += file.readDouble();
+                count++;
+            }
+        }
+        return sum / (count * 1.0);
     }
 }

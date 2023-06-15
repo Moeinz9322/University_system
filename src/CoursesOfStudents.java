@@ -8,9 +8,9 @@ public class CoursesOfStudents {
     private String studentUsername;
     private String examDate;
     private int courseNumber;
-    private int grade;
+    private double grade;
 
-    public CoursesOfStudents(String courseName, String studentUsername, String examDate, int courseNumber, int grade) {
+    public CoursesOfStudents(String courseName, String studentUsername, String examDate, int courseNumber, double grade) {
         this.courseName = courseName;
         this.studentUsername = studentUsername;
         this.examDate = examDate;
@@ -50,11 +50,11 @@ public class CoursesOfStudents {
         this.courseNumber = courseNumber;
     }
 
-    public int getGrade() {
+    public double getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(double grade) {
         this.grade = grade;
     }
 

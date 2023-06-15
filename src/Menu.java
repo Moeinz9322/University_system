@@ -1,8 +1,9 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Menu {
     public static void startMenu() throws IOException {
@@ -186,7 +187,7 @@ public class Menu {
         List<Letter> letters = letterFile.findLetter(username);
         for (Letter letter : letters) {
             System.out.println(".......................................................................................");
-            System.out.printf("A letter from : %s(%s)\\n", letter.getAuthorName(), letter.getAuthorJob());
+            System.out.printf("A letter from : %s(%s)\n", letter.getAuthorName(), letter.getAuthorJob());
             System.out.printf("Date : %s\nSubject : %s\n", letter.getDate(), letter.getSubject());
             System.out.println(letter.getTextOfTheLetter());
         }
@@ -237,12 +238,38 @@ public class Menu {
 
     private void endSemester() throws IOException {
         RandomAccessFile fileSemesters = new RandomAccessFile("SemestersFile.txt", "rw");
+        RandomAccessFile usersFile = new RandomAccessFile("UsersFile.txt", "rw");
+        UsersFile usersFile1 = new UsersFile(usersFile);
         SemestersFile semestersFile = new SemestersFile(fileSemesters);
+        List<String> studentsUsername;
+        double grade;
+        String condition = "pass";
+        String firstname;
+        String lastname;
         if (fileSemesters.length() != 0) {
             fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
             if (semestersFile.readFixString().equals("Start")) {
                 fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
                 semestersFile.writeString("end");
+                //report
+                RandomAccessFile reportFile = new RandomAccessFile("ReportFile.txt", "rw");
+                ReportFile reportFile1 = new ReportFile(reportFile);
+                studentsUsername = new ArrayList<>();
+                studentsUsername = usersFile1.findUserAccordingToJob("student");
+                for (String username : studentsUsername) {
+                    reportFile.seek(reportFile.length());
+                    RandomAccessFile courseFile = new RandomAccessFile("CoursesOfStudent.txt", "rw");
+                    CoursesOfStudentsFile coursesOfStudentsFile = new CoursesOfStudentsFile(courseFile);
+                    grade = coursesOfStudentsFile.averageGrade(username);
+                    if (grade < 12)
+                        condition = "conditionally";
+                    usersFile.seek(usersFile1.findUserAccordingToUsername(username) * UsersFile.RECORD_SIZE + 6 * usersFile1.FIX_SIZE);
+                    firstname = usersFile1.readFixString();
+                    lastname = usersFile1.readFixString();
+                    reportFile1.write(firstname, lastname, grade, condition);
+
+                }
+                reportFile1.read();
                 System.out.println("successful ...");
             } else {
                 System.out.println("There is no current semester ...");
@@ -251,6 +278,7 @@ public class Menu {
         } else {
             System.out.println("There is no semester ...");
         }
+
         pauseInputEnter();
         fileSemesters.close();
     }
@@ -287,6 +315,11 @@ public class Menu {
     }
 
     private void enrollInCourses(String username) throws IOException {
+        if (!isThereCurrentSemester()) {
+            System.out.println("There is no current semester ...");
+            pauseInputEnter();
+            return;
+        }
         CoursesOfStudents coursesOfStudents = new CoursesOfStudents(null, username, null, 0, 0);
         RandomAccessFile file = new RandomAccessFile("CoursesOfStudent.txt", "rw");
         file.seek(file.length());
@@ -329,6 +362,12 @@ public class Menu {
     }
 
     private void setFinalGrades(String username) throws IOException {
+        if (!isThereCurrentSemester()) {
+            System.out.println("There is no current semester ...");
+            pauseInputEnter();
+            return;
+        }
+
         List<Integer> coursesNumber = new CoursesOfProfessorFile(new RandomAccessFile("Courses.txt", "rw"))
                 .findProfessorUsername(username);
         RandomAccessFile courseStudentFile = new RandomAccessFile("CoursesOfStudent.txt", "rw");
@@ -344,15 +383,32 @@ public class Menu {
                 new UsersFile(new RandomAccessFile("UsersFile.txt", "rw")).findUsername(coursesOfStudentsFile.readFixString());
                 System.out.print("his/her grade :");
                 courseStudentFile.seek(numberStudent * CoursesOfStudentsFile.RECORD_SIZE + coursesOfStudentsFile.FIX_SIZE * 6 + 4);
-                courseStudentFile.writeInt(Integer.parseInt(Input.inputIntegerNotNullToString()));
+                Scanner input0 = new Scanner(System.in);
+                courseStudentFile.writeDouble(input0.nextDouble());
                 System.out.println("successful ...");
                 System.out.print("Press enter to enter the score of the next person ...");
                 Input.inputString();
-                for (int i = 0; i < courseStudentFile.length() / CoursesOfStudentsFile.RECORD_SIZE; i++) {
-                    courseStudentFile.seek(i * CoursesOfStudentsFile.RECORD_SIZE);
-                    System.out.println(coursesOfStudentsFile.read());
-                }
+//                for (int i = 0; i < courseStudentFile.length() / CoursesOfStudentsFile.RECORD_SIZE; i++) {
+//                    courseStudentFile.seek(i * CoursesOfStudentsFile.RECORD_SIZE);
+//                    System.out.println(coursesOfStudentsFile.read());
+//                }
             }
+        }
+    }
+
+    public boolean isThereCurrentSemester() throws IOException {
+        RandomAccessFile fileSemesters = new RandomAccessFile("SemestersFile.txt", "rw");
+        SemestersFile semestersFile = new SemestersFile(fileSemesters);
+        if (fileSemesters.length() != 0) {
+            fileSemesters.seek(fileSemesters.length() - semestersFile.RECORD_SIZE);
+            if (semestersFile.readFixString().equals("Start")) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
         }
     }
 

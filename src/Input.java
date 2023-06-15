@@ -147,7 +147,7 @@ public class Input {
     }
 
     public void inputForAddStudentMenu() throws IOException {
-        FacultyFile facultyFile = new FacultyFile(new RandomAccessFile("FacultyFile.txt", "rw"));
+        FacultyFile facultyFile = new FacultyFile(new RandomAccessFile("Faculties.txt", "rw"));
         do {
             switch (inputStringNotNull().toLowerCase()) {
                 case "1", "add students", "file" -> {
@@ -256,7 +256,7 @@ public class Input {
             }
             professorsCoursesFile.seek(CoursesOfProfessorFile.RECORD_SIZE * coursesOfStudents.getCourseNumber() + (6 * coursesOfProfessorFile.FIX_SIZE) + 8);
             coursesOfStudents.setExamDate(coursesOfProfessorFile.readFixString());
-            coursesOfStudents.setGrade(0);
+            coursesOfStudents.setGrade(0.0);
             if (!new CoursesOfStudentsFile(new RandomAccessFile("CoursesOfStudent.txt", "rw")).isThereClockInterference(coursesOfStudents))
                 break;
         }

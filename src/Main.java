@@ -16,7 +16,6 @@ public class Main {
             UsersFile usersFile = new UsersFile(file);
             file.seek(0);
             usersFile.write(new User("Ali", "1111", "staff", "Ali", "Amini"));
-            usersFile.write(new User("Shokoofeh", "1111", "professor", "Shokoofeh", "Bostan"));
             usersFile.write(new User("Moein", "1111", "student", "Moein", "Zanjirian"));
             Menu.startMenu();
         } catch (IOException e) {
