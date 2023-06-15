@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Moein Zanjirian Zadeh
@@ -74,5 +76,15 @@ public class CoursesOfStudentsFile extends File {
             }
         }
         return false;
+    }
+
+    public List<Integer> findCourseNumber(int courseNumber) throws IOException {
+        List<Integer> coursesNumber = new ArrayList<>();
+        for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
+            file.seek(i * RECORD_SIZE + FIX_SIZE * 6);
+            if (courseNumber == file.readInt())
+                coursesNumber.add(i);
+        }
+        return coursesNumber;
     }
 }

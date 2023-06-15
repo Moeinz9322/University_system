@@ -1,9 +1,8 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.RandomAccess;
 
 public class Menu {
     public static void startMenu() throws IOException {
@@ -316,7 +315,7 @@ public class Menu {
                 switch (Input.inputIntegerNotNullToString()) {
                     case "1" -> menu.writeLetter("professor", username);
                     case "2" -> menu.viewLetters(username);
-                    case "3" -> menu.setFinalGrades();
+                    case "3" -> menu.setFinalGrades(username);
                     case "4" -> {
                         break outer;
                     }
@@ -329,8 +328,32 @@ public class Menu {
         }
     }
 
-    private void setFinalGrades() {
-        System.out.println("set final grades ... ");
+    private void setFinalGrades(String username) throws IOException {
+        List<Integer> coursesNumber = new CoursesOfProfessorFile(new RandomAccessFile("Courses.txt", "rw"))
+                .findProfessorUsername(username);
+        RandomAccessFile courseStudentFile = new RandomAccessFile("CoursesOfStudent.txt", "rw");
+        CoursesOfStudentsFile coursesOfStudentsFile = new CoursesOfStudentsFile(courseStudentFile);
+        List<Integer> numberOfCourseStudentFile;
+        for (Integer courseNumber : coursesNumber) {
+            numberOfCourseStudentFile = new ArrayList<>();
+            numberOfCourseStudentFile = coursesOfStudentsFile.findCourseNumber(courseNumber);
+            for (Integer numberStudent : numberOfCourseStudentFile) {
+                courseStudentFile.seek(numberStudent * CoursesOfStudentsFile.RECORD_SIZE);
+                System.out.println(coursesOfStudentsFile.read());
+                courseStudentFile.seek(numberStudent * CoursesOfStudentsFile.RECORD_SIZE + coursesOfStudentsFile.FIX_SIZE * 2);
+                new UsersFile(new RandomAccessFile("UsersFile.txt", "rw")).findUsername(coursesOfStudentsFile.readFixString());
+                System.out.print("his/her grade :");
+                courseStudentFile.seek(numberStudent * CoursesOfStudentsFile.RECORD_SIZE + coursesOfStudentsFile.FIX_SIZE * 6 + 4);
+                courseStudentFile.writeInt(Integer.parseInt(Input.inputIntegerNotNullToString()));
+                System.out.println("successful ...");
+                System.out.print("Press enter to enter the score of the next person ...");
+                Input.inputString();
+                for (int i = 0; i < courseStudentFile.length() / CoursesOfStudentsFile.RECORD_SIZE; i++) {
+                    courseStudentFile.seek(i * CoursesOfStudentsFile.RECORD_SIZE);
+                    System.out.println(coursesOfStudentsFile.read());
+                }
+            }
+        }
     }
 
     private static void info() {

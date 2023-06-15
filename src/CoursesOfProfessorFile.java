@@ -64,4 +64,14 @@ public class CoursesOfProfessorFile extends File {
         }
         return courseNumber;
     }
+
+    public List<Integer> findProfessorUsername(String username) throws IOException {
+        List<Integer> courseNumber = new ArrayList<>();
+        for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
+            file.seek(i * RECORD_SIZE + (4 * FIX_SIZE) + 8);
+            if (username.equals(readFixString()))
+                courseNumber.add(i);
+        }
+        return courseNumber;
+    }
 }

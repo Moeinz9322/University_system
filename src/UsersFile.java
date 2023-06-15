@@ -30,6 +30,20 @@ public class UsersFile extends File {
         return -1;
     }
 
+    public boolean findUsername(String username) throws IOException {
+        User user;
+        for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
+            file.seek(i * RECORD_SIZE);
+            if (username.equals(readFixString())) {
+                file.seek(i * RECORD_SIZE);
+                user = read();
+                System.out.println(user.getFirstName() + " " + user.getLastName());
+            }
+
+        }
+        return true;
+    }
+
     public int findUserAccordingToFirstName(String username) throws IOException {
         for (int i = 0; i < file.length() / RECORD_SIZE; i++) {
             file.seek(i * RECORD_SIZE + FIX_SIZE * 6);
